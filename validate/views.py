@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 import datetime
+
+from validate.models import Request
 # Create your views here.
 
 
@@ -26,6 +28,7 @@ def uinput(request):
     try:
 
         try:
+            reqid = 1
             if len(firstname) == 0 or len(firstname) < 3:
                 raise Exception
 
@@ -99,7 +102,10 @@ def uinput(request):
                 raise Exception
         except:
             raise Exception
-
+        b = Request(reqid=reqid, firstname=firstname, lastname=lastname, dob=dob, gender=gender, nationality=nationality,
+                    state=state, city=city, pincode=pincode, qualification=qualification, salary=salary, pannumber=pan)
+        b.save()
+        reqid = reqid + 1
         return render(request, 'result.html', {'operation': 'success'})
 
     except:
